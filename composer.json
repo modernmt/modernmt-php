@@ -1,0 +1,24 @@
+{
+    "name": "modernmt/modernmt-php",
+    "type": "library",
+    "description": "ModernMT API wrapper",
+    "authors": [
+        {
+            "name": "ModernMT",
+            "email": "info@modernmt.com",
+            "homepage": "https://www.modernmt.com"
+        }
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/modernmt/modernmt-php",
+    "require": {
+        "php": ">=5.6.0",
+        "ext-curl": "*",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "ModernMT\\": "src/"
+        }
+    }
+}
