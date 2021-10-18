@@ -18,7 +18,7 @@ class HttpClient {
     /**
      * @throws ModernMTException
      */
-    public function send($method, $path, $data = null, $files = false) {
+    public function send($method, $path, $data = null, $files = null) {
         $url = $this->baseUrl . $path;
 
         $headers = $this->headers;
