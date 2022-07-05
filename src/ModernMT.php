@@ -47,6 +47,8 @@ class ModernMT {
                 $data['multiline'] = $options['multiline'];
             if (isset($options['timeout']))
                 $data['timeout'] = $options['timeout'];
+            if (isset($options['format']))
+                $data['format'] = $options['format'];
         }
 
         return $this->http->send('get', '/translate', $data);
