@@ -10,7 +10,7 @@ class ModernMT {
     private $http;
     public $memories;
 
-    public function __construct($license, $platform = 'modernmt-php', $platformVersion = '1.0.1') {
+    public function __construct($license, $platform = 'modernmt-php', $platformVersion = '1.0.2') {
         $this->http = new HttpClient('https://api.modernmt.com', [
             "MMT-ApiKey: $license",
             "MMT-Platform: $platform",
