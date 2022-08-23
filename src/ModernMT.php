@@ -29,6 +29,18 @@ class ModernMT {
     /**
      * @throws ModernMTException
      */
+    public function detect_language($q, $format = null) {
+        $data = [
+            'q' => $q,
+            'format' => $format
+        ];
+
+        return $this->http->send('get', '/translate/detect', $data);
+    }
+
+    /**
+     * @throws ModernMTException
+     */
     public function translate($source, $target, $q, $hints = null, $context_vector = null, $options = null) {
         $data = [
             'source' => $source,
