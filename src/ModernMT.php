@@ -61,6 +61,8 @@ class ModernMT {
                 $data['timeout'] = $options['timeout'];
             if (isset($options['format']))
                 $data['format'] = $options['format'];
+            if (isset($options['alt_translations']))
+                $data['alt_translations'] = $options['alt_translations'];
         }
 
         return $this->http->send('get', '/translate', $data);
