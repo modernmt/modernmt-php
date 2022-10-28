@@ -22,7 +22,7 @@ class HttpClient {
         $url = $this->baseUrl . $path;
 
         $headers = $this->headers;
-        array_push($headers, "X-HTTP-Method-Override: $method");
+        $headers[] = "X-HTTP-Method-Override: $method";
 
         if ($data)
             $data = array_filter($data, function($el) {
@@ -32,7 +32,7 @@ class HttpClient {
             $data = [];
 
         if ($files) {
-            array_push($headers, 'Content-Type: multipart/form-data');
+            $headers[] = 'Content-Type: multipart/form-data';
 
             foreach (array_filter($files) as $key => $value) {
                 if (!file_exists($value))
@@ -41,7 +41,7 @@ class HttpClient {
                 $data[$key] = new CURLFile($value);
             }
         } else {
-            array_push($headers, 'Content-Type: application/json');
+            $headers[] = 'Content-Type: application/json';
             $data = json_encode($data);
         }
 
