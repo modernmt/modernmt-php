@@ -7,7 +7,7 @@ if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
 	exit 1
 fi
 
-# header
-match="    public function __construct\("
-ver="    public function __construct\(\$license, \$platform = 'modernmt-php', \$platformVersion = '${VERSION}'\) {"
+# shellcheck disable=SC2016
+match='        if \(\$platformVersion == null\) \$platformVersion ='
+ver="        if \(\$platformVersion == null\) \$platformVersion = '${VERSION}';"
 sed -i -E "/$match/s/.*/$ver/" src/ModernMT.php
