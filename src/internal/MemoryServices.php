@@ -14,8 +14,17 @@ class MemoryServices {
 
     /**
      * @throws ModernMTException
+     * @deprecated use getAll() instead
      */
     public function get_all() {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated', E_USER_DEPRECATED);
+        return $this->getAll();
+    }
+
+    /**
+     * @throws ModernMTException
+     */
+    public function getAll() {
         return $this->http->send('get', '/memories');
     }
 
@@ -93,9 +102,17 @@ class MemoryServices {
 
     /**
      * @throws ModernMTException
+     * @deprecated use getImportStatus() instead
      */
     public function get_import_status($uuid) {
-        return $this->http->send('get', "/import-jobs/$uuid");
+        trigger_error('Method ' . __METHOD__ . ' is deprecated', E_USER_DEPRECATED);
+        return $this->getImportStatus($uuid);
     }
 
+    /**
+     * @throws ModernMTException
+     */
+    public function getImportStatus($uuid) {
+        return $this->http->send('get', "/import-jobs/$uuid");
+    }
 }

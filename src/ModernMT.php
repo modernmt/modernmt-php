@@ -29,15 +29,33 @@ class ModernMT {
 
     /**
      * @throws ModernMTException
+     * @deprecated use listSupportedLanguages() instead
      */
     public function list_supported_languages() {
-        return $this->http->send('get', '/translate/languages');
+        trigger_error('Method ' . __METHOD__ . ' is deprecated', E_USER_DEPRECATED);
+        return $this->listSupportedLanguages();
     }
 
     /**
      * @throws ModernMTException
      */
+    public function listSupportedLanguages() {
+        return $this->http->send('get', '/translate/languages');
+    }
+
+    /**
+     * @throws ModernMTException
+     * @deprecated use detectLanguage() instead
+     */
     public function detect_language($q, $format = null) {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated', E_USER_DEPRECATED);
+        return $this->detectLanguage($q, $format);
+    }
+
+    /**
+     * @throws ModernMTException
+     */
+    public function detectLanguage($q, $format = null) {
         $data = [
             'q' => $q,
             'format' => $format
@@ -78,8 +96,17 @@ class ModernMT {
 
     /**
      * @throws ModernMTException
+     * @deprecated use getContextVector() instead
      */
     public function get_context_vector($source, $targets, $text, $hints = null, $limit = null) {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated', E_USER_DEPRECATED);
+        return $this->getContextVector($source, $targets, $text, $hints, $limit);
+    }
+
+    /**
+     * @throws ModernMTException
+     */
+    public function getContextVector($source, $targets, $text, $hints = null, $limit = null) {
         $multiple_targets = is_array($targets);
 
         if ($multiple_targets)
@@ -101,9 +128,19 @@ class ModernMT {
 
     /**
      * @throws ModernMTException
+     * @deprecated use getContextVectorFromFile() instead
      */
     public function get_context_vector_from_file($source, $targets, $file, $hints = null, $limit = null,
                                                  $compression = null) {
+        trigger_error('Method ' . __METHOD__ . ' is deprecated', E_USER_DEPRECATED);
+        return $this->getContextVectorFromFile($source, $targets, $file, $hints, $limit, $compression);
+    }
+
+    /**
+     * @throws ModernMTException
+     */
+    public function getContextVectorFromFile($source, $targets, $file, $hints = null, $limit = null,
+                                             $compression = null) {
         $multiple_targets = is_array($targets);
 
         if ($multiple_targets)
