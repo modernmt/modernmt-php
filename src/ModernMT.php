@@ -96,6 +96,41 @@ class ModernMT {
 
     /**
      * @throws ModernMTException
+     */
+    public function batchTranslate($webhook, $source, $target, $q, $hints = null, $context_vector = null, $options = null) {
+        $data = [
+            'webhook' => $webhook,
+            'source' => $source,
+            'target' => $target,
+            'q' => $q,
+            'hints' => $hints ? implode(',', $hints) : null,
+            'context_vector' => $context_vector
+        ];
+
+        $headers = null;
+
+        if ($options) {
+            if (isset($options['project_id']))
+                $data['project_id'] = $options['project_id'];
+            if (isset($options['multiline']))
+                $data['multiline'] = $options['multiline'];
+            if (isset($options['format']))
+                $data['format'] = $options['format'];
+            if (isset($options['alt_translations']))
+                $data['alt_translations'] = $options['alt_translations'];
+            if (isset($options['metadata']))
+                $data['metadata'] = $options['metadata'];
+
+            if (isset($options['idempotency_key']))
+                $headers = ["x-idempotency-key" => $options['idempotency_key']];
+        }
+
+        $result = $this->http->send('post', '/translate/batch', $data, null, $headers);
+        return $result["enqueued"];
+    }
+
+    /**
+     * @throws ModernMTException
      * @deprecated use getContextVector() instead
      */
     public function get_context_vector($source, $targets, $text, $hints = null, $limit = null) {
