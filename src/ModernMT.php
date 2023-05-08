@@ -2,8 +2,13 @@
 
 namespace ModernMT;
 
+use DomainException;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+use InvalidArgumentException;
 use ModernMT\internal\HttpClient;
 use ModernMT\internal\MemoryServices;
+use UnexpectedValueException;
 
 class ModernMT {
 
@@ -131,6 +136,41 @@ class ModernMT {
 
     /**
      * @throws ModernMTException
+     * @throws SignatureException
+     */
+    public function handleCallback($data, $signature) {
+        // Verify callback signature
+        try {
+            $key = ModernMT::getPublicKey();
+            JWT::decode($signature, new Key($key, 'RS256'));
+        } catch (InvalidArgumentException $e) {
+            throw new SignatureException($e->getMessage());
+        } catch (DomainException $e) {
+            throw new SignatureException($e->getMessage());
+        } catch (UnexpectedValueException $e) {
+            throw new SignatureException($e->getMessage());
+        }
+
+        if (is_string($data))
+            $data = json_decode($data, true);
+
+        $result = $data["result"];
+        $metadata = isset($data["metadata"]) ? $data["metadata"] : null;
+
+        $status = $result["status"];
+        if ($status >= 300 || $status < 200) {
+            $error = $result["error"];
+            $type = isset($error["type"]) ? $error["type"] : null;
+            $message = isset($error["message"]) ? $error["message"] : null;
+
+            throw new ModernMTException($status, $type, $message, $metadata);
+        } else {
+            return ["result" => $result["data"], "metadata" => $metadata];
+        }
+    }
+
+    /**
+     * @throws ModernMTException
      * @deprecated use getContextVector() instead
      */
     public function get_context_vector($source, $targets, $text, $hints = null, $limit = null) {
@@ -194,4 +234,42 @@ class ModernMT {
         return $multiple_targets ? $res['vectors'] : $res['vectors'][$targets];
     }
 
+    /**
+     * @throws ModernMTException
+     */
+    private function retrievePublicKey() {
+        $result = $this->http->send('get', '/translate/batch/key');
+        return base64_decode($result["publicKey"]);
+    }
+
+    private function storePublicKey($pk, $cache_file) {
+        // try to atomically write cache file
+        $tmp_file = tempnam(sys_get_temp_dir(), "mmt_pkey_");
+        file_put_contents($tmp_file, $pk);
+        rename($tmp_file, $cache_file);
+    }
+
+    /**
+     * @throws ModernMTException
+     */
+    private function getPublicKey() {
+        $cache_file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . "php_mmt_batch_translate_public_key.pub";
+
+        if (!is_file($cache_file)) {
+            $pk = $this->retrievePublicKey();
+            $this->storePublicKey($pk, $cache_file);
+        } else if ((filectime($cache_file) + 3600) < time()) {  // file is older than 1 hour
+            try {
+                $pk = $this->retrievePublicKey();
+                $this->storePublicKey($pk, $cache_file);
+            } catch (ModernMTException $e) {
+                // if file exists then retrieve last available key and ignore API exception
+                $pk = file_get_contents($cache_file);
+            }
+        } else {
+            $pk = file_get_contents($cache_file);
+        }
+
+        return $pk;
+    }
 }
