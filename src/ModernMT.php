@@ -138,7 +138,7 @@ class ModernMT {
      * @throws ModernMTException
      * @throws SignatureException
      */
-    public function handleCallback($data, $signature) {
+    public function handleCallback($body, $signature) {
         // Verify callback signature
         try {
             $key = ModernMT::getPublicKey();
@@ -151,11 +151,11 @@ class ModernMT {
             throw new SignatureException($e->getMessage());
         }
 
-        if (is_string($data))
-            $data = json_decode($data, true);
+        if (is_string($body))
+            $body = json_decode($body, true);
 
-        $result = $data["result"];
-        $metadata = isset($data["metadata"]) ? $data["metadata"] : null;
+        $result = $body["result"];
+        $metadata = isset($body["metadata"]) ? $body["metadata"] : null;
 
         $status = $result["status"];
         if ($status >= 300 || $status < 200) {
@@ -165,7 +165,7 @@ class ModernMT {
 
             throw new ModernMTException($status, $type, $message, $metadata);
         } else {
-            return ["result" => $result["data"], "metadata" => $metadata];
+            return ["data" => $result["data"], "metadata" => $metadata];
         }
     }
 
