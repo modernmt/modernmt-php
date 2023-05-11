@@ -18,11 +18,16 @@ class HttpClient {
     /**
      * @throws ModernMTException
      */
-    public function send($method, $path, $data = null, $files = null) {
+    public function send($method, $path, $data = null, $files = null, $additional_headers = null) {
         $url = $this->baseUrl . $path;
 
         $headers = $this->headers;
         $headers[] = "X-HTTP-Method-Override: $method";
+
+        if ($additional_headers) {
+            foreach ($additional_headers as $name => $value)
+                $headers[] = "$name: $value";
+        }
 
         if ($data)
             $data = array_filter($data, function($el) {
