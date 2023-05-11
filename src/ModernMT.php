@@ -17,7 +17,7 @@ class ModernMT {
 
     public function __construct($license, $platform = null, $platformVersion = null, $apiClient = null) {
         if ($platform == null) $platform = 'modernmt-php';
-        if ($platformVersion == null) $platformVersion = '1.1.1';
+        if ($platformVersion == null) $platformVersion = '1.2.0';
 
         $headers = [
             "MMT-ApiKey: $license",
