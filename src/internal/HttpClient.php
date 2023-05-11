@@ -21,7 +21,10 @@ class HttpClient {
     public function send($method, $path, $data = null, $files = null, $additional_headers = null) {
         $url = $this->baseUrl . $path;
 
-        $headers = $this->headers;
+        $headers = [];
+        if ($this->headers)
+            $headers = $this->headers;
+
         $headers[] = "X-HTTP-Method-Override: $method";
 
         if ($additional_headers) {
