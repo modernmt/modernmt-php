@@ -231,7 +231,10 @@ class ModernMT {
             'content' => $file
         ]);
 
-        return $multiple_targets ? $res['vectors'] : $res['vectors'][$targets];
+        if ($multiple_targets)
+            return $res['vectors'];
+
+        return isset($res['vectors'][$targets]) ? $res['vectors'][$targets] : null;
     }
 
     /**
