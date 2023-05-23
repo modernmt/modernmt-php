@@ -275,4 +275,11 @@ class ModernMT {
 
         return $pk;
     }
+
+    /**
+     * @throws ModernMTException
+     */
+    public function me() {
+        return $this->http->send('get', '/users/me');
+    }
 }

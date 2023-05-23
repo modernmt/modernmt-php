@@ -49,8 +49,11 @@ class HttpClient {
                 $data[$key] = new CURLFile($value);
             }
         } else {
-            $headers[] = 'Content-Type: application/json';
-            $data = json_encode($data);
+            // do not send empty body
+            if (count($data)) {
+                $headers[] = 'Content-Type: application/json';
+                $data = json_encode($data);
+            }
         }
 
         $curl = curl_init($url);
