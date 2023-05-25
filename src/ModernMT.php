@@ -282,4 +282,16 @@ class ModernMT {
     public function me() {
         return $this->http->send('get', '/users/me');
     }
+
+    /**
+     * @throws ModernMTException
+     */
+    public function qe($source, $target, $sentence, $translation) {
+        return $this->http->send('get', '/qe', [
+            'source' => $source,
+            'target' => $target,
+            'sentence' => $sentence,
+            'translation' => $translation
+        ]);
+    }
 }
