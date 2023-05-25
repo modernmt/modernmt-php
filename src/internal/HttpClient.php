@@ -50,7 +50,7 @@ class HttpClient {
             }
         } else {
             // do not send empty body
-            if (count($data)) {
+            if (!empty($data)) {
                 $headers[] = 'Content-Type: application/json';
                 $data = json_encode($data);
             }
