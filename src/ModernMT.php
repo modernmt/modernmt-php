@@ -94,6 +94,8 @@ class ModernMT {
                 $data['format'] = $options['format'];
             if (isset($options['alt_translations']))
                 $data['alt_translations'] = $options['alt_translations'];
+            if (isset($options['session']))
+                $data['session'] = $options['session'];
         }
 
         return $this->http->send('get', '/translate', $data);
@@ -125,6 +127,8 @@ class ModernMT {
                 $data['alt_translations'] = $options['alt_translations'];
             if (isset($options['metadata']))
                 $data['metadata'] = $options['metadata'];
+            if (isset($options['session']))
+                $data['session'] = $options['session'];
 
             if (isset($options['idempotency_key']))
                 $headers = ["x-idempotency-key" => $options['idempotency_key']];
