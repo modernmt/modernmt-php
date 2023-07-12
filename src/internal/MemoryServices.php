@@ -66,26 +66,28 @@ class MemoryServices {
     /**
      * @throws ModernMTException
      */
-    public function add($memory, $source, $target, $sentence, $translation, $tuid = null) {
+    public function add($memory, $source, $target, $sentence, $translation, $tuid = null, $session = null) {
         return $this->http->send('post', "/memories/$memory/content", [
             'source' => $source,
             'target' => $target,
             'sentence' => $sentence,
             'translation' => $translation,
-            'tuid' => $tuid
+            'tuid' => $tuid,
+            'session' => $session
         ]);
     }
 
     /**
      * @throws ModernMTException
      */
-    public function replace($memory, $tuid, $source, $target, $sentence, $translation) {
+    public function replace($memory, $tuid, $source, $target, $sentence, $translation, $session = null) {
         return $this->http->send('put', "/memories/$memory/content", [
             'tuid' => $tuid,
             'source' => $source,
             'target' => $target,
             'sentence' => $sentence,
-            'translation' => $translation
+            'translation' => $translation,
+            'session' => $session
         ]);
     }
 
