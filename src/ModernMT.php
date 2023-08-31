@@ -101,6 +101,8 @@ class ModernMT {
                 $data['ignore_glossary_case'] = $options['ignore_glossary_case'];
             if (isset($options['glossaries']))
                 $data['glossaries'] = $options['glossaries'];
+            if (isset($options['mask_profanities']))
+                $data['mask_profanities'] = $options['mask_profanities'];
         }
 
         return $this->http->send('get', '/translate', $data);
@@ -139,6 +141,8 @@ class ModernMT {
                 $data['ignore_glossary_case'] = $options['ignore_glossary_case'];
             if (isset($options['glossaries']))
                 $data['glossaries'] = $options['glossaries'];
+            if (isset($options['mask_profanities']))
+                $data['mask_profanities'] = $options['mask_profanities'];
 
             if (isset($options['idempotency_key']))
                 $headers = ["x-idempotency-key" => $options['idempotency_key']];
