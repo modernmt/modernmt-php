@@ -69,6 +69,7 @@ class ModernMT {
         return $this->http->send('get', '/translate/detect', $data);
     }
 
+    /** @noinspection DuplicatedCode */
     /**
      * @throws ModernMTException
      */
@@ -96,11 +97,16 @@ class ModernMT {
                 $data['alt_translations'] = $options['alt_translations'];
             if (isset($options['session']))
                 $data['session'] = $options['session'];
+            if (isset($options['ignore_glossary_case']))
+                $data['ignore_glossary_case'] = $options['ignore_glossary_case'];
+            if (isset($options['glossaries']))
+                $data['glossaries'] = $options['glossaries'];
         }
 
         return $this->http->send('get', '/translate', $data);
     }
 
+    /** @noinspection DuplicatedCode */
     /**
      * @throws ModernMTException
      */
@@ -129,6 +135,10 @@ class ModernMT {
                 $data['metadata'] = $options['metadata'];
             if (isset($options['session']))
                 $data['session'] = $options['session'];
+            if (isset($options['ignore_glossary_case']))
+                $data['ignore_glossary_case'] = $options['ignore_glossary_case'];
+            if (isset($options['glossaries']))
+                $data['glossaries'] = $options['glossaries'];
 
             if (isset($options['idempotency_key']))
                 $headers = ["x-idempotency-key" => $options['idempotency_key']];

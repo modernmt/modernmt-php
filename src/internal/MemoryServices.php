@@ -104,6 +104,40 @@ class MemoryServices {
 
     /**
      * @throws ModernMTException
+     */
+    public function addToGlossary($memory, $terms, $type, $tuid) {
+        return $this->http->send('post', "/memories/$memory/glossary", [
+            'terms' => $terms,
+            'type' => $type,
+            'tuid' => $tuid
+        ]);
+    }
+
+    /**
+     * @throws ModernMTException
+     */
+    public function replaceInGlossary($memory, $terms, $type, $tuid) {
+        return $this->http->send('put', "/memories/$memory/glossary", [
+            'terms' => $terms,
+            'type' => $type,
+            'tuid' => $tuid
+        ]);
+    }
+
+    /**
+     * @throws ModernMTException
+     */
+    public function importGlossary($memory, $csv, $type, $compression = null) {
+        return $this->http->send('post', "/memories/$memory/glossary", [
+            'compression' => $compression,
+            'type' => $type
+        ], [
+            'csv' => $csv
+        ]);
+    }
+
+    /**
+     * @throws ModernMTException
      * @deprecated use getImportStatus() instead
      */
     public function get_import_status($uuid) {
