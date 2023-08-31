@@ -77,7 +77,7 @@ class ModernMT {
             'source' => $source,
             'target' => $target,
             'q' => $q,
-            'hints' => $hints ? implode(',', $hints) : null,
+            'hints' => $hints,
             'context_vector' => $context_vector
         ];
 
@@ -110,7 +110,7 @@ class ModernMT {
             'source' => $source,
             'target' => $target,
             'q' => $q,
-            'hints' => $hints ? implode(',', $hints) : null,
+            'hints' => $hints,
             'context_vector' => $context_vector
         ];
 
@@ -186,20 +186,15 @@ class ModernMT {
      * @throws ModernMTException
      */
     public function getContextVector($source, $targets, $text, $hints = null, $limit = null) {
-        $multiple_targets = is_array($targets);
-
-        if ($multiple_targets)
-            $targets = implode(',', $targets);
-
         $res = $this->http->send('get', '/context-vector', [
             'source' => $source,
             'targets' => $targets,
             'text' => $text,
-            'hints' => $hints ? implode(',', $hints) : null,
+            'hints' => $hints,
             'limit' => $limit
         ]);
 
-        if ($multiple_targets)
+        if (is_array($targets))
             return $res['vectors'];
 
         return isset($res['vectors'][$targets]) ? $res['vectors'][$targets] : null;
@@ -220,22 +215,17 @@ class ModernMT {
      */
     public function getContextVectorFromFile($source, $targets, $file, $hints = null, $limit = null,
                                              $compression = null) {
-        $multiple_targets = is_array($targets);
-
-        if ($multiple_targets)
-            $targets = implode(',', $targets);
-
         $res = $this->http->send('get', '/context-vector', [
             'source' => $source,
             'targets' => $targets,
-            'hints' => $hints ? implode(',', $hints) : null,
+            'hints' => $hints,
             'limit' => $limit,
             'compression' => $compression
         ], [
             'content' => $file
         ]);
 
-        if ($multiple_targets)
+        if (is_array($targets))
             return $res['vectors'];
 
         return isset($res['vectors'][$targets]) ? $res['vectors'][$targets] : null;
