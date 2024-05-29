@@ -295,7 +295,7 @@ class ModernMT {
      * @throws ModernMTException
      */
     public function qe($source, $target, $sentence, $translation) {
-        return $this->http->send('get', '/qe', [
+        return $this->http->send('get', '/translate/qe', [
             'source' => $source,
             'target' => $target,
             'sentence' => $sentence,
